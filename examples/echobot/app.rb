@@ -20,6 +20,10 @@ post '/callback' do
   end
 
   events = client.parse_events_from(body)
+  
+  MQTT::Client.connect('broker.emqx.io') do |c|
+    c.publish('cuRRenTtranSformeR', events)
+  end
 
   events.each do |event|
     case event
