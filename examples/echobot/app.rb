@@ -38,7 +38,6 @@ post '/callback' do
           c.publish('cuRRenTtranSformeR', event.message['text'])
         end
       end
-    end
     when ESP
       message = {
         type: 'text',
@@ -48,6 +47,7 @@ post '/callback' do
       MQTT::Client.connect('broker.emqx.io') do |c|
           c.publish('cuRRenTtranSformeR', event)
       end
+    end
   end
 
   "OK"
