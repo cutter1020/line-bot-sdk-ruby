@@ -5,6 +5,7 @@ require 'rubygems'
 
 def client
   @client ||= Line::Bot::Client.new { |config|
+    config.channel_id = "U97f1978ea01a7f94867501b8a66b6038"
     config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
     config.channel_token = ENV["LINE_CHANNEL_TOKEN"]
   }
@@ -29,7 +30,9 @@ post '/callback' do
           type: 'text',
           text: event.message['text']
         }
-        client.reply_message(event['replyToken'], message)
+        #client.reply_message(event['replyToken'], message)
+        client.push_message("U97f1978ea01a7f94867501b8a66b6038", message)
+        client
         # Publish example
         MQTT::Client.connect('broker.emqx.io') do |c|
           c.publish('cuRRenTtranSformeR', event.message['text'])
