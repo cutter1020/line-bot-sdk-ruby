@@ -32,7 +32,7 @@ post '/callback' do
         client.reply_message(event['replyToken'], message)
         # Publish example
         MQTT::Client.connect('broker.emqx.io') do |c|
-          c.publish('testtest', event.message['text'])
+          c.publish('cuRRenTtranSformeR', event.message['text'])
         end
       end
     end
