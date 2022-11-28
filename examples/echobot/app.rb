@@ -14,10 +14,10 @@ end
 post '/callback' do
   body = request.body.read
 
-  signature = request.env['HTTP_X_LINE_SIGNATURE']
-  unless client.validate_signature(body, signature)
-    halt 400, {'Content-Type' => 'text/plain'}, 'Bad Request'
-  end
+  #signature = request.env['HTTP_X_LINE_SIGNATURE']
+  #unless client.validate_signature(body, signature)
+  #  halt 400, {'Content-Type' => 'text/plain'}, 'Bad Request'
+  #end
 
   events = client.parse_events_from(body)
   
