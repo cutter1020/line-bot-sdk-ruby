@@ -1,5 +1,7 @@
 require 'sinatra'   # gem 'sinatra'
 require 'line/bot'  # gem 'line-bot-api'
+require 'mqtt'
+require 'rubygems'
 
 def client
   @client ||= Line::Bot::Client.new { |config|
@@ -28,6 +30,10 @@ post '/callback' do
           text: event.message['text']
         }
         client.reply_message(event['replyToken'], message)
+        # Publish example
+        MQTT::Client.connect('broker.emqx.io') do |c|
+          c.publish('testtest', 'message')
+        end
       end
     end
   end
