@@ -15,6 +15,11 @@ post '/callback' do
   request.body.rewind
   body = request.body.read
 
+  MQTT::Client.connect('broker.emqx.io') do |c|
+    #c.publish('cuRRenTtranSformeR', events)
+    c.publish('cuRRenTtranSformeR', JSON.parse(body))
+    #c.publish('cuRRenTtranSformeR', params)
+  end
   #signature = request.env['HTTP_X_LINE_SIGNATURE']
   #unless client.validate_signature(body, signature)
   #  halt 400, {'Content-Type' => 'text/plain'}, 'Bad Request'
@@ -22,11 +27,7 @@ post '/callback' do
 
   events = client.parse_events_from(body)
   
-  MQTT::Client.connect('broker.emqx.io') do |c|
-    #c.publish('cuRRenTtranSformeR', events)
-    c.publish('cuRRenTtranSformeR', JSON.parse(body))
-    #c.publish('cuRRenTtranSformeR', params)
-  end
+
 
   events.each do |event|
     case event
