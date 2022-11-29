@@ -13,7 +13,7 @@ end
 
 post '/callback' do
   request.body.rewind
-  body = JSON.parse request.body.read
+  body = request.body.read
 
   #signature = request.env['HTTP_X_LINE_SIGNATURE']
   #unless client.validate_signature(body, signature)
@@ -24,7 +24,8 @@ post '/callback' do
   
   MQTT::Client.connect('broker.emqx.io') do |c|
     #c.publish('cuRRenTtranSformeR', events)
-    c.publish('cuRRenTtranSformeR', body)
+    #c.publish('cuRRenTtranSformeR', body)
+    c.publish('cuRRenTtranSformeR', params)
   end
 
   events.each do |event|
