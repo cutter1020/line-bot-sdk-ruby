@@ -15,16 +15,13 @@ post '/callback' do
   request.body.rewind
   body = request.body.read
   json_body = JSON.parse(body)
-  MQTT::Client.connect('broker.emqx.io') do |c|
-    c.publish('cuRRenTtranSformeR', body)
-  end
 
   if json_body['ESP']
     message = {
         type: 'text',
         text: json_body['ESP']
       }
-      client.push_message("U97f1978ea01a7f94867501b8a66b6038", message)
+      client.push_message("C198376a20d27dd67f2e128560bcebf4d", message)
   else
     events = client.parse_events_from(body)
     events.each do |event|
