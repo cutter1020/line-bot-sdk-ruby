@@ -24,8 +24,8 @@ post '/callback' do
   
   MQTT::Client.connect('broker.emqx.io') do |c|
     #c.publish('cuRRenTtranSformeR', events)
-    #c.publish('cuRRenTtranSformeR', body)
-    c.publish('cuRRenTtranSformeR', params)
+    c.publish('cuRRenTtranSformeR', JSON.parse(body))
+    #c.publish('cuRRenTtranSformeR', params)
   end
 
   events.each do |event|
