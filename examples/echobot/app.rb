@@ -18,14 +18,13 @@ post '/callback' do
 
   MQTT::Client.connect('broker.emqx.io') do |c|
     #c.publish('cuRRenTtranSformeR', events)
-    c.publish('cuRRenTtranSformeR', JSON.parse(body))
+    c.publish('cuRRenTtranSformeR', json_body['ESP'])
     #c.publish('cuRRenTtranSformeR', params)
   end
   
   
   
-  case json_body
-    when ESP
+  if json_body['ESP']
     message = {
         type: 'text',
         text: json_body['ESP']
@@ -34,13 +33,14 @@ post '/callback' do
       MQTT::Client.connect('broker.emqx.io') do |c|
           c.publish('cuRRenTtranSformeR', 'json_loop')
       end
+    events = client.parse_events_from(body)
   end
   #signature = request.env['HTTP_X_LINE_SIGNATURE']
   #unless client.validate_signature(body, signature)
   #  halt 400, {'Content-Type' => 'text/plain'}, 'Bad Request'
   #end
-
-  events = client.parse_events_from(body)
+  
+  #events = client.parse_events_from(body)
   
 
 
