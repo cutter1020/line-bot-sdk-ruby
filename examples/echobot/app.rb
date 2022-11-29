@@ -15,25 +15,37 @@ post '/callback' do
   request.body.rewind
   body = request.body.read
   json_body = JSON.parse(body)
-
   MQTT::Client.connect('broker.emqx.io') do |c|
-    #c.publish('cuRRenTtranSformeR', events)
-    c.publish('cuRRenTtranSformeR', json_body['ESP'])
-    #c.publish('cuRRenTtranSformeR', params)
+    c.publish('cuRRenTtranSformeR', body)
   end
-  
-  
-  
+
   if json_body['ESP']
     message = {
         type: 'text',
         text: json_body['ESP']
       }
       client.push_message("U97f1978ea01a7f94867501b8a66b6038", message)
-      MQTT::Client.connect('broker.emqx.io') do |c|
-          c.publish('cuRRenTtranSformeR', 'json_loop')
-      end
+  else
     events = client.parse_events_from(body)
+    events.each do |event|
+      case event
+      when Line::Bot::Event::Message
+        case event.type
+        when Line::Bot::Event::MessageType::Text
+          message = {
+            type: 'text',
+            text: event.message['text']
+          }
+          #client.reply_message(event['replyToken'], message)
+          #client.push_message("U97f1978ea01a7f94867501b8a66b6038", message)
+          #client
+         # Publish example
+          MQTT::Client.connect('broker.emqx.io') do |c|
+            c.publish('cuRRenTtranSformeR', event.message['text'])
+          end
+        end
+      end
+    end
   end
   #signature = request.env['HTTP_X_LINE_SIGNATURE']
   #unless client.validate_signature(body, signature)
@@ -41,37 +53,5 @@ post '/callback' do
   #end
   
   #events = client.parse_events_from(body)
-  
-
-
-  events.each do |event|
-    case event
-    when Line::Bot::Event::Message
-      case event.type
-      when Line::Bot::Event::MessageType::Text
-        message = {
-          type: 'text',
-          text: event.message['text']
-        }
-        #client.reply_message(event['replyToken'], message)
-        #client.push_message("U97f1978ea01a7f94867501b8a66b6038", message)
-        client
-        # Publish example
-        MQTT::Client.connect('broker.emqx.io') do |c|
-          c.publish('cuRRenTtranSformeR', event.message['text'])
-        end
-      end
-    when ESP
-      message = {
-        type: 'text',
-        text: event['ESP']
-      }
-      client.push_message("U97f1978ea01a7f94867501b8a66b6038", message)
-      MQTT::Client.connect('broker.emqx.io') do |c|
-          c.publish('cuRRenTtranSformeR', body)
-      end
-    end
-  end
-
   "OK"
 end
