@@ -21,7 +21,7 @@ post '/callback' do
         type: 'text',
         text: json_body['ESP']
       }
-      client.push_message("C198376a20d27dd67f2e128560bcebf4d", message)
+    client.push_message("C198376a20d27dd67f2e128560bcebf4d", message)
   else
     events = client.parse_events_from(body)
     events.each do |event|
@@ -35,6 +35,7 @@ post '/callback' do
           }
           #client.reply_message(event['replyToken'], message)
           client.push_message("U97f1978ea01a7f94867501b8a66b6038", message)
+          client.push_message("C198376a20d27dd67f2e128560bcebf4d", message)
           #client
          # Publish example
           MQTT::Client.connect('broker.emqx.io') do |c|
