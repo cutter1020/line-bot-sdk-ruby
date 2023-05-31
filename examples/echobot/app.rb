@@ -31,9 +31,10 @@ post '/callback' do
         when Line::Bot::Event::MessageType::Text
           message = {
             type: 'text',
-            text: event.message['text']
+            #text: event.message['text']
+            text: event.source['type']
           }
-          #client.reply_message(event['replyToken'], message)
+          client.reply_message(event['replyToken'], message)
           #client.push_message("U97f1978ea01a7f94867501b8a66b6038", message)
           #client
          # Publish example
