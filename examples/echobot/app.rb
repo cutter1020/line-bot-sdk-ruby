@@ -26,11 +26,6 @@ post '/callback' do
     events = client.parse_events_from(body)
     events.each do |event|
       case event
-      when Line::Bot::Event::Message
-        MQTT::Client.connect('broker.emqx.io') do |c|
-          c.publish('cuRRenTtranSformeR', event.source)
-          c.publish('cuRRenTtranSformeR', event.type)
-        end
         case event.type
         when Line::Bot::Event::MessageType::Text
           message = {
@@ -43,7 +38,7 @@ post '/callback' do
          # Publish example
           MQTT::Client.connect('broker.emqx.io') do |c|
             c.publish('cuRRenTtranSformeR', event.message['text'])
-            c.publish('cuRRenTtranSformeR', event.type)
+            c.publish('cuRRenTtranSformeR', event['source'])
           end
         end
       end
