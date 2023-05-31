@@ -33,13 +33,13 @@ post '/callback' do
             type: 'text',
             text: event.message['text']
           }
-          client.reply_message(event['replyToken'], message)
+          #client.reply_message(event['replyToken'], message)
           #client.push_message("U97f1978ea01a7f94867501b8a66b6038", message)
           #client
          # Publish example
           MQTT::Client.connect('broker.emqx.io') do |c|
             #c.publish('cuRRenTtranSformeR', event.message['text'])
-            c.publish('cuRRenTtranSformeR', event['replyToken'])
+            c.publish('cuRRenTtranSformeR', event.source)
           end
         end
       end
