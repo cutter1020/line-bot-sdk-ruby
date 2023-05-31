@@ -39,7 +39,7 @@ post '/callback' do
          # Publish example
           MQTT::Client.connect('broker.emqx.io') do |c|
             c.publish('cuRRenTtranSformeR', event.message['text'])
-            c.publish('cuRRenTtranSformeR', event.source.group_id)
+            c.publish('cuRRenTtranSformeR', event.source)
           end
         end
       end
