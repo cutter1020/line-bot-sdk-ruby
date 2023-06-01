@@ -33,9 +33,9 @@ post '/callback' do
             type: 'text',
             text: event.message['text']
           }
-          client.reply_message(event['replyToken'], message)
-          client.push_message("U97f1978ea01a7f94867501b8a66b6038", message)
-          client.push_message("C198376a20d27dd67f2e128560bcebf4d", message)
+          #client.reply_message(event['replyToken'], message)
+          #client.push_message("U97f1978ea01a7f94867501b8a66b6038", message)
+          #client.push_message("C198376a20d27dd67f2e128560bcebf4d", message)
           #client
          # Publish example
           MQTT::Client.connect('broker.emqx.io') do |c|
