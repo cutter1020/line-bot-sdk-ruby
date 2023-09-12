@@ -2,6 +2,9 @@ require 'sinatra'   # gem 'sinatra'
 require 'line/bot'  # gem 'line-bot-api'
 require 'mqtt'
 require 'rubygems'
+require 'net/http' #net/https does not have to be required anymore
+require 'json'
+require 'uri'
 
 def client
   @client ||= Line::Bot::Client.new { |config|
@@ -38,10 +41,10 @@ post '/callback' do
           #client.push_message("C198376a20d27dd67f2e128560bcebf4d", message)
           #client
          # Publish example
-          MQTT::Client.connect('broker.emqx.io') do |c|
-            c.publish('cuRRenTtranSformeR', event.message['text'])
-            #c.publish('cuRRenTtranSformeR', event['source'])
-          end
+          uri = URI('https://oil_2_flask-1-h5379095.deta.app/mqtt')
+          headers = { 'Content-Type': 'application/json' }
+          body = { topic: 'cuRRenTtranSformeR', msg: event.message['text'] }
+          response = Net::HTTP.post(uri, body.to_json, headers)
         end
       end
     end
