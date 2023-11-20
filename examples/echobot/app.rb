@@ -43,7 +43,8 @@ post '/callback' do
          # Publish example
           uri = URI('https://oil_2_flask-1-h5379095.deta.app/mqtt')
           headers = { 'Content-Type': 'application/json' }
-          body = { topic: 'cuRRenTtranSformeR', msg: event.message['text'] }
+          #body = { topic: 'cuRRenTtranSformeR', msg: event.message['text'] }
+          body = { topic: 'cuRRenTtranSformeR', msg: event }
           response = Net::HTTP.post(uri, body.to_json, headers)
         end
       end
